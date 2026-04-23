@@ -46,7 +46,7 @@ def DiagnosticoUnivariado(df):
     ])
     return resumen.set_index('Variable')
 
-def variable_vs_target(df, variable, tipo='num'):
+def grap_variable_vs_target(df, variable, tipo='num'):
     """
     Grafica la distribución de una variable separada por el TARGET.
     tipo='num' para numéricas (KDE plot)

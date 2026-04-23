@@ -46,4 +46,31 @@ def DiagnosticoUnivariado(df):
     ])
     return resumen.set_index('Variable')
 
+def variable_vs_target(df, variable, tipo='num'):
+    """
+    Grafica la distribución de una variable separada por el TARGET.
+    tipo='num' para numéricas (KDE plot)
+    tipo='cat' para categóricas (Gráfico de barras apiladas)
+    """
+    plt.figure(figsize=(8, 5))
+    
+    if tipo == 'num':
+        # Para variables continuas 
+        sns.kdeplot(data=df, x=variable, hue='TARGET', fill=True, common_norm=False, palette='viridis')
+        plt.title(f'Distribución de {variable} según Riesgo (TARGET)')
+        
+    elif tipo == 'cat':
+        # Para variables de texto o binarias 
+        # Calculamos el % de morosidad por categoría
+        prop_mora = df.groupby(variable)['TARGET'].mean().reset_index()
+        prop_mora['TARGET'] = prop_mora['TARGET'] * 100
+        
+        sns.barplot(data=prop_mora, x=variable, y='TARGET', palette='Reds')
+        plt.title(f'% de Morosidad por {variable}')
+        plt.ylabel('% de Morosidad (TARGET=1)')
+        plt.xticks(rotation=45)
+        
+    plt.tight_layout()
+    plt.show()
+
 # @copyright Anghie Chilon  

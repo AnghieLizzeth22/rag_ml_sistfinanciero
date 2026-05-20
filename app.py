@@ -12,10 +12,10 @@ from src.engine_rag import GeneradorExplicacionesRAG
 # 1. INYECTAR LA LLAVE DIRECTAMENTE AQUÍ
 os.environ["GOOGLE_API_KEY"] = "AIzaSyAkN3UGXRrFfMyWpR88fiv0dxdhNHekspM"
 
-st.set_page_config(page_title="Core Risk System | ML + RAG", layout="wide")
+st.set_page_config(page_title="Core Risk System", layout="wide")
 
-st.title("🏛️ Sistema de Admisión de Riesgo Crediticio Híbrido")
-st.subheader("Maestría en Ciencia de Datos / Ingeniería de Sistemas - UNI")
+st.title("🏛️ Sistema de Admisión de Riesgo Crediticio")
+st.subheader("Maestría en Ciencia de Datos - UNI")
 st.markdown("---")
 
 @st.cache_resource
@@ -38,7 +38,7 @@ else:
     df_db = pd.read_csv(ruta_datos)
     
     st.markdown("### 🔍 Módulo de Consulta de Solicitudes")
-    id_buscado = st.number_input("Ingrese el Identificador Único del Cliente (SK_ID_CURR):", step=1, value=int(df_db['SK_ID_CURR'].iloc[0]))
+    id_buscado = st.number_input("Ingrese el Identificador Único del Cliente:", step=1, value=int(df_db['SK_ID_CURR'].iloc[0]))
     
     if st.button("Evaluar Solicitud de Crédito"):
         # 1. Filtramos la fila exacta del deudor consultado

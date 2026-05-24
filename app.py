@@ -9,10 +9,16 @@ import os
 from src.predictor import MotoresPredictivos
 from src.engine_rag import GeneradorExplicacionesRAG
 
-# 1. INYECTAR LA LLAVE DIRECTAMENTE AQUÍ
-os.environ["GOOGLE_API_KEY"] = "AIzaSyAkN3UGXRrFfMyWpR88fiv0dxdhNHekspM"
-
 st.set_page_config(page_title="Core Risk System", layout="wide")
+
+# --- EXTRACCIÓN SEGURA DE CREDENCIALES DESDE STREAMLIT SECRETS ---
+try:
+    # Extraemos la llave nueva sin exponerla en el código de la bitácora
+    api_key_segura = st.secrets["GEMINI_API_KEY"]
+    os.environ["GOOGLE_API_KEY"] = api_key_segura
+except Exception as e:
+    st.error("❌ Error de configuración: No se localizó 'GEMINI_API_KEY' en los secretos de Streamlit.")
+    st.stop()
 
 st.title("🏛️ Sistema de Admisión de Riesgo Crediticio")
 st.subheader("Maestría en Ciencia de Datos - UNI")
@@ -25,7 +31,7 @@ def inicializar_motor_ml():
 try:
     predictor = inicializar_motor_ml()
     st.sidebar.success("✅ Modelo LightGBM cargado localmente.")
-    st.sidebar.success("🔑 Credenciales de Gemini configuradas.")
+    st.sidebar.success("🔑 Credenciales de Gemini configuradas de forma segura.")
 except Exception as e:
     st.sidebar.error(f"❌ Error al cargar LightGBM: {str(e)}")
     st.stop()

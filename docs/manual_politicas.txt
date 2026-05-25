@@ -1,0 +1,244 @@
+================================================================================
+COMPENDIO NORMATIVO INSTITUCIONAL: REGLAMENTO GENERAL PARA LA GESTIÓN, 
+EVALUACIÓN, MITIGACIÓN E INGESTA DEL RIESGO DE CRÉDITO EN CARTERAS DE CONSUMO
+================================================================================
+Código de Identificación: REG-GL-RISK-2026-V4
+Aprobación Corporativa: Directorio Ejecutivo y Comité de Riesgos de la Banca Core
+Área de Custodia: División de Modelos Avanzados y MLOps de Producción
+Ámbito de Aplicación: Red de Agencias, Canales Digitales y Motores de Decisión
+Alineamiento Regulatorio: Resolución SBS N° 3780-2011 y Directivas Modificatorias
+================================================================================
+
+--------------------------------------------------------------------------------
+TITULO I: MARCO JURÍDICO, OBJETO, ALCANCE Y ARQUITECTURA DE EXPLICABILIDAD
+--------------------------------------------------------------------------------
+
+CAPÍTULO I: DISPOSICIONES GENERALES Y FUNDAMENTO REGULATORIO
+Artículo 1.01: Objeto de la Directiva.
+El presente compendio normativo tiene por objeto establecer de manera taxativa las 
+reglas de negocio, umbrales paramétricos y criterios de tolerancia al riesgo que 
+gobiernan el otorgamiento de créditos de consumo minorista, líneas de crédito 
+revolventes y facilidades crediticias no garantizadas. Este reglamento define el 
+apetito de riesgo de la institución y delimita las fronteras operativas del negocio.
+
+Artículo 1.02: Alcance Ecosistémico.
+Las disposiciones contenidas en esta directiva son de cumplimiento obligatorio y 
+vinculante para todos los estamentos involucrados en el ciclo de crédito, incluyendo 
+las gerencias de producto, las áreas de admisión, las jefaturas de agencias y, de 
+manera mandatoria, los algoritmos automatizados de scoring y redes neuronales 
+desplegados en el pipeline de producción (Machine Learning Operations).
+
+Artículo 1.03: Alineamiento con la Superintendencia (SBS).
+Este documento se fundamenta estrictamente en el "Reglamento de Gestión del Riesgo 
+de Crédito", aprobado mediante la Resolución SBS N° 3780-2011 y sus posteriores 
+modificaciones técnicas emitidas para el fortalecimiento patrimonial. Responde de forma 
+directa a la exigencia supervisora de contar con manuales metodológicos internos 
+que impidan el sobreendeudamiento de los deudores y garanticen una correcta 
+constitución de provisiones por riesgo de incobrabilidad.
+
+CAPÍTULO II: DE LA EXPLICABILIDAD DE LOS MODELOS DE INTELIGENCIA ARTIFICIAL
+Artículo 1.04: Rechazo de la Doctrina de "Caja Negra" (Black-Box Models).
+Conforme a los estándares modernos de Gobierno de Datos y Auditoría de Sistemas, la 
+institución prohíbe el uso de dictámenes automatizados que carezcan de un sustento 
+lógico interpretable. Los modelos matemáticos (como el algoritmo LightGBM optimizado) 
+proveen una probabilidad cuantitativa de impago, pero dicha cifra debe ser traducida 
+e indexada contra los artículos de este reglamento mediante técnicas de Generación 
+Aumentada por Recuperación (RAG).
+
+Artículo 1.05: El Proceso de Grounding (Anclaje Normativo).
+Se establece que todo reporte de denegación de crédito generado por el sistema de 
+Inteligencia Artificial debe realizar una consulta indexada (Embeddings sobre base 
+vectorial FAISS) para extraer las cláusulas específicas de este documento que 
+coincidan con las variables predictivas del cliente. Queda prohibida la emisión de 
+cartas de rechazo que utilicen texto genérico sin citar la política institucional 
+vulnerada.
+
+--------------------------------------------------------------------------------
+TÍTULO II: DE LAS POLÍTICAS DE LIQUIDEZ REVOLVENTE Y ESTRÉS FINANCIERO CORTO
+--------------------------------------------------------------------------------
+
+CAPÍTULO I: DEL RATIO DE ASFIXIA EN LÍNEAS DE TARJETAS DE CRÉDITO
+Artículo 2.01: Definición Operacional de la Variable CC_UTILIZATION_MAX.
+El indicador CC_UTILIZATION_MAX se define formalmente como el valor máximo registrado 
+en la cuenta del cliente que resulta de dividir el saldo deudor total consolidado 
+(AMT_BALANCE) entre la línea de crédito contractualmente autorizada y vigente 
+(AMT_CREDIT_LIMIT_ACTUAL) en el producto de tarjeta de crédito del solicitante.
+
+Artículo 2.02: Umbral de Tolerancia y Alerta de Asfixia.
+El Comité de Riesgos fija un límite estricto de 0.85 (85%) para el indicador 
+CC_UTILIZATION_MAX. Todo cliente cuyo vector de datos procesado en el pipeline muestre 
+un valor superior será catalogado inmediatamente bajo el estado de "Apalancamiento 
+Crítico por Estrés de Liquidez".
+
+Artículo 2.03: Sustento Técnico-Científico del Riesgo.
+La utilización persistente de más del 85% de las líneas de crédito revolventes es 
+un síntoma inequívoco de la destrucción del presupuesto familiar o empresarial del 
+sujeto. Cuando un individuo agota su capacidad de crédito disponible, pierde la 
+flexibilidad financiera para reaccionar ante choques económicos exógenos (como gastos 
+médicos, inflación o caídas de ingresos). El modelo analítico captura esta variable 
+como una de las de mayor peso (Gain Importance) debido a que el "vaciamiento" de 
+líneas precede cronológicamente en un 42% a los eventos de cese de pagos (Default).
+
+CAPÍTULO II: DE LAS OPERACIONES DE LIQUIDACIÓN DE EFECTIVO (CASH DRAWINGS)
+Artículo 2.04: Monitoreo de Disposición de Efectivo (AMT_RETIROS_EFECTIVO_MAX).
+Se establece el rastreo obligatorio del monto máximo de disposiciones de dinero en 
+efectivo realizadas a través de cajeros automáticos utilizando las líneas de 
+tarjetas de crédito, mapeado en la variable AMT_RETIROS_EFECTIVO_MAX.
+
+Artículo 2.05: Umbral de Penalización Directa.
+Los clientes que presenten retiros de efectivo recurrentes que representen más del 
+30% de su saldo deudor mensual serán penalizados severamente en el scoring. La 
+disposición de efectivo mediante tarjetas se considera el financiamiento de mayor 
+costo del mercado peruano. Recurrir a esta práctica demuestra que el flujo de 
+ingresos del deudor está severamente comprometido, utilizando deuda cara para pagar 
+deuda barata o gastos corrientes no postergables.
+
+--------------------------------------------------------------------------------
+TÍTULO III: DE LA COMPORTABILIDAD DE PAGO EN VENTANAS TEMPORALES RECIENTES
+--------------------------------------------------------------------------------
+
+CAPÍTULO I: DE LAS ANOMALÍAS DE PAGO EN EL CORTO PLAZO
+Artículo 3.01: Preponderancia de la Ventana de 180 Días (MAX_RETRASO_6M).
+Para la estimación de la probabilidad de incumplimiento de corto plazo, se determina 
+que el comportamiento registrado en los últimos 6 meses (180 días) calendarios posee 
+un valor predictivo tres veces superior al comportamiento histórico de largo plazo. 
+Esta dimensión es aislada mediante la variable analítica avanzada MAX_RETRASO_6M.
+
+Artículo 3.02: Criterio de Exclusión Directa por Mora Reciente.
+La aparición de cualquier evento de retraso en el pago de cuotas programadas (tabla 
+de installments) donde el valor de MAX_RETRASO_6M sea estrictamente mayor a cero 
+(0) días se considerará una infracción a la disciplina crediticia, gatillando el 
+veto temporal del solicitante.
+
+Artículo 3.03: Justificación Metodológica del Deterioro Semestral.
+Los retrasos en los últimos 6 meses reflejan problemas de liquidez estructurales 
+e inmediatos en la vida del deudor, tales como la pérdida intempestiva del empleo, 
+la caída de ventas en su negocio o eventos de salud no asegurados. En la ciencia de 
+riesgos, un cliente que pagó a tiempo durante 5 años pero que empezó a retrasarse 
+en las últimas 3 cuotas representa un riesgo inminente de pérdida. El promedio 
+histórico tiende a suavizar y ocultar este peligro, por lo que el aislamiento de 
+los últimos 180 días en el Feature Engineering es vital para proteger el patrimonio 
+del banco.
+
+CAPÍTULO II: DE LA COBERTURA EFECTIVA DE CUOTAS FACTURADAS
+Artículo 3.04: Ratio de Cobertura de Pago (INS_PAYMENT_FRACTION_MEAN).
+Se define este indicador como la media analítica de la división entre el monto pagado 
+efectivamente por el cliente (AMT_PAYMENT) y el monto contractualmente facturado en 
+la cuota de la amortización (AMT_INSTALMENT).
+
+Artículo 3.05: Umbral de Sub-Pago.
+Todo valor inferior a 1.0 (100% de la cuota cubierta) denota la práctica de "Pagos 
+Parciales" o "Pagos Mínimos". Esta conducta es un indicador temprano de insolvencia, 
+donde el deudor ya no cuenta con el excedente de caja necesario para cumplir el 
+contrato original, acumulando intereses punitorios que destruyen su solvencia en el 
+mediano plazo.
+
+--------------------------------------------------------------------------------
+TÍTULO IV: DE LA EXPOSICIÓN SISTÉMICA Y ACELERACIÓN DEL ENDEUDAMIENTO
+--------------------------------------------------------------------------------
+
+CAPÍTULO I: DEL FENÓMENO DE COMPRA DE CRÉDITO AGRESIVA (CREDIT SHOPPING)
+Artículo 4.01: Definición Operacional de la Velocidad de Endeudamiento.
+La variable BUREAU_RECENT_CREDIT_VELOCITY calcula el cociente entre el número de 
+cuentas e instrumentos financieros aperturados por el solicitante en los últimos 
+365 días en todo el sistema bancario, frente al número total de cuentas registradas 
+en su historial consolidado del Bureau de Crédito.
+
+Artículo 4.02: Umbral Normativo de Alerta Temprana.
+Se establece un valor límite de 0.50 (50%). Si un aplicante registra que más de la 
+mitad de sus créditos vigentes han sido contratados en el último año, el motor de 
+decisión detendrá el flujo y clasificará al perfil bajo "Alerta de Sobreendeudamiento 
+Acelerado por Canales Cruzados".
+
+Artículo 4.03: Justificación del Riesgo Sistémico.
+En la doctrina del riesgo de crédito minorista, la adquisición masiva y desordenada 
+de pasivos en un lapso corto de tiempo es una conducta típica de usuarios en estado 
+de desesperación por liquidez o fraude de salida. Estos sujetos, al experimentar 
+el rechazo de sus solicitudes en las entidades financieras tradicionales debido a 
+la degradación de sus perfiles, aplican en paralelo a múltiples financieras de 
+menor rango para capturar la mayor cantidad de capital antes de que las centrales de 
+riesgo actualicen los saldos deudores consolidados. Esta asimetría informativa 
+es mitigada por el modelo al medir la velocidad temporal del Bureau.
+
+CAPÍTULO II: DE LA CARGA DE LA DEUDA EXTERNA SOBRE LOS INGRESOS DISPONIBLES
+Artículo 4.04: Ratio de Apalancamiento Externo (DEUDA_EXT_INGRESOS).
+Esta métrica evalúa el peso de la deuda total consolidada en el sistema financiero 
+externo frente a los ingresos netos verificados y declarados por el cliente en su 
+ficha de postulación.
+
+Artículo 4.05: Límite de Capacidad de Pago.
+Alineado con las directrices de Basilea y la SBS, la carga total de la deuda no puede 
+exceder el 40% de los ingresos netos del solicitante. Un deudor que destina más de 
+dicho porcentaje al servicio de la deuda externa carece del ingreso residual mínimo 
+para cubrir la canasta básica de consumo, volviendo cualquier nuevo crédito 
+inviable debido a que la probabilidad de mora se eleva de forma exponencial.
+
+--------------------------------------------------------------------------------
+TÍTULO V: DE LOS CRITERIOS DEMOGRÁFICOS DE ESTABILIDAD SOCIO-LABORAL
+--------------------------------------------------------------------------------
+
+CAPÍTULO I: DE LA SEGMENTACIÓN COMBINADA DE EDAD Y EXPERIENCIA LABORAL
+Artículo 5.01: Enfoque Multivariante de la Estabilidad del Solicitante.
+Se prohíbe explícitamente a los evaluadores físicos y lógicos analizar la edad o la 
+antigüedad laboral de manera aislada. El riesgo sociodemográfico se gestionará de 
+forma cruzada uniendo las variables EDAD_AÑOS y EXPERIENCIA_AÑOS (antigüedad en el 
+empleo actual declarada en la tabla application).
+
+Artículo 5.02: Definición del Perfil de Inestabilidad Laboral Temprana.
+Los solicitantes que registren de forma simultánea una edad cronológica menor a los 
+30 años y una experiencia laboral menor a los 2.0 años serán clasificados bajo el 
+rótulo de "Perfil Laboral Volátil".
+
+Artículo 5.03: Justificación Técnica de la Volatilidad Juvenil.
+Estadísticamente, los trabajadores jóvenes con baja antigüedad en sus puestos de 
+trabajo actuales presentan una tasa de rotación y despido cinco veces superior a 
+la de los segmentos de mayor edad y estabilidad. Ante escenarios de contracción 
+económica o reestructuraciones corporativas, las empresas prescinden primero de los 
+empleados con menor tiempo de servicio. Al carecer de un patrimonio consolidado o 
+ahorros líquidos, estos usuarios entran en cesación de pagos de forma inmediata 
+ante la pérdida del empleo, elevando el riesgo de la cartera en sus primeros meses.
+
+--------------------------------------------------------------------------------
+TÍTULO VI: DE LAS CALIFICACIONES CRUZADAS Y CONSENSOS DEL ECOSISTEMA BANCARIO
+--------------------------------------------------------------------------------
+
+CAPÍTULO I: DEL PROMEDIO CONSOLIDADO DE RATINGS EXTERNOS (EXT_SOURCES)
+Artículo 6.01: Integración Analítica de las Fuentes Externas.
+La institución utiliza de forma mandatoria las variables predictivas externas 
+EXT_SOURCE_1, EXT_SOURCE_2 y EXT_SOURCE_3, las cuales representan scores scoring 
+diseñados por centrales de riesgo de renombre internacional y modelos predictivos 
+de bancos competidores. Estas fuentes se unifican mediante el estadístico 
+EXT_SOURCES_MEAN.
+
+Artículo 6.02: Umbral Mínimo de Consenso Sistémico.
+Se establece un valor límite de 0.30 para la variable EXT_SOURCES_MEAN. Cualquier 
+puntuación consolidada por debajo de este umbral constituirá un veto unánime del 
+sistema financiero, provocando el rechazo automático de la operación.
+
+Artículo 6.03: Justificación y Sustento de la Reputación Cruzada.
+Los algoritmos de las agencias calificadoras externas procesan información que se 
+encuentra fuera del alcance operativo de la base de datos interna de nuestra 
+institución, tales como deudas con el sector comercial, telefonía, protestos de 
+letras, juicios por alimentos y patrones de pago en cooperativas no reguladas. Si 
+el promedio consolidado de estas fuentes independientes arroja una calificación 
+reprobatoria, es evidencia matemática de que el deudor mantiene un comportamiento 
+deficiente generalizado en el mercado. Esta señal anula cualquier indicador interno 
+positivo que el cliente muestre en nuestras bases de datos locales, actuando como 
+un escudo de protección cruzada.
+================================================================================
+
+
+--- DICCIONARIO DE VARIABLES OFICIALES DEL DATASET (HOME CREDIT) ---
+
+- SK_ID_CURR: Identificador único y correlativo de la solicitud de crédito del cliente en nuestra muestra.
+- TARGET: Variable objetivo del modelo. Indica dificultad de pago. (1 = Cliente con problemas de morosidad o retrasos mayores a X días en sus primeras cuotas; 0 = Cliente que pagó puntualmente todas sus cuotas).
+- AMT_INCOME_TOTAL: Ingresos mensuales totales reportados y demostrados por el solicitante.
+- AMT_CREDIT: Monto total del crédito solicitado o financiado en la operación actual.
+- AMT_ANNUITY: Monto de la cuota mensual (anualidad) que el cliente debe pagar por el crédito.
+- EXT_SOURCE_1 / EXT_SOURCE_2 / EXT_SOURCE_3: Puntuajes crediticios normalizados provenientes de centrales de riesgo externas y burós de crédito (como Infocorp, Equifax o Sentinel). Un valor más alto representa un menor riesgo.
+- EXT_SOURCES_MEAN: Promedio matemático consolidado de los tres scores externos anteriores. Refleja la reputación crediticia general del cliente en el sistema financiero peruano.
+- CC_UTILIZATION_MAX: Ratio máximo de asfixia o utilización de la línea de crédito en tarjetas. Mide qué porcentaje de su línea disponible gasta el deudor (Saldo deudor consolidado / Línea de crédito aprobada).
+- MAX_RETRASO_6M: Cantidad máxima de días de atraso o mora que ha registrado el cliente en el último semestre en cualquier producto financiero.
+- EDAD_AÑOS: Edad cronológica actual del solicitante calculada al momento de evaluar la operación.
+- DAYS_BIRTH: Edad del cliente expresada en días al momento de la solicitud (valor numérico negativo para el procesamiento matemático del modelo).
+- DAYS_EMPLOYED: Antigüedad laboral del cliente expresada en días en su empleo actual.
